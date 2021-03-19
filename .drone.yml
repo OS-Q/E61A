@@ -1,0 +1,8 @@
+kind: pipeline
+name: default
+
+steps:
+- name: Drone
+  image: dockcross/windows-x64
+  commands:
+  - call project/coreTest.bat
