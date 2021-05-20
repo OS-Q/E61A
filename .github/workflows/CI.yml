@@ -42,16 +42,6 @@ jobs:
         name: code_check_report
         path: codecheck.txt
 
-  arduino:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 1
-      - uses: Qful/arduino-action@master
-
   build:
     strategy:
       fail-fast: false
@@ -64,6 +54,7 @@ jobs:
           - "SPI"
           - "Wire"
           - "EEPROM"
+          - "FreeRTOS"
           - "SoftwareSerial"
         package: ["pio","qio"]
     runs-on: ubuntu-latest
@@ -77,6 +68,9 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.9
+
+      - uses: Qful/arduino-action@master
+        working-directory: ${{ matrix.example }}
 
       - name: Install qio
         if: matrix.package == 'qio'
