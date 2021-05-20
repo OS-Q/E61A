@@ -70,7 +70,8 @@ jobs:
           python-version: 3.9
 
       - uses: Qful/arduino-action@master
-        working-directory: ${{ matrix.example }}
+        env:
+          USE_SUBDIR: ${{ matrix.example }}
 
       - name: Install qio
         if: matrix.package == 'qio'
