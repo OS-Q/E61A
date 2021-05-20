@@ -1,18 +1,24 @@
 version: 2
 jobs:
-  BAT:
+  QIO:
     docker:
-      - image: dockcross/windows-x64
+      - image: python:3
     steps:
       - checkout
       - run:
+          name: "Install"
+          command: |
+            python -m pip install --upgrade pip
+            pip install -U https://github.com/OS-Q/M03/releases/latest/download/qio.zip
+            pio platform install https://github.com/OS-Q/P111/archive/master.zip
+      - run:
           name: "Build"
           command: |
-            call project/coreTest.bat
+            pio ci --lib="./EEPROM" --board=uno --board=leonardo --board=megaatmega2560 EEPROM/examples/test/test.ino
 
 
 workflows:
     version: 2
     run_ci:
         jobs:
-            - BAT
+            - QIO

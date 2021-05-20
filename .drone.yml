@@ -1,8 +1,11 @@
 kind: pipeline
-name: default
+name: OSQ
 
 steps:
-- name: Drone
-  image: dockcross/windows-x64
+- name: arduino
+  image: python:3
   commands:
-  - call project/coreTest.bat
+  - python -m pip install --upgrade pip
+  - pip install -U https://github.com/OS-Q/M03/releases/latest/download/qio.zip
+  - qio platform install https://github.com/OS-Q/P111/archive/master.zip
+  - pio ci --lib="./EEPROM" --board=uno --board=leonardo --board=megaatmega2560 EEPROM/examples/test/test.ino
